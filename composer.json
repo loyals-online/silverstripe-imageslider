@@ -1,0 +1,26 @@
+{
+  "name": "mediaweb/silverstripe-imageslider",
+  "description": "A simple yet configurable image slider",
+  "type": "silverstripe-module",
+  "keywords": [
+    "silverstripe",
+    "slider",
+    "imageslider",
+    "module",
+    "cms"
+  ],
+  "license": "GPLv3",
+  "authors": [
+    {
+      "name": "Jan-Pieter van der Poel",
+      "email": "jp@loyals.nl"
+    }
+  ],
+  "require": {
+    "silverstripe/framework": "~3.4"
+  },
+  "extra": {
+    "installer-name": "imageslider"
+  },
+  "target-dir": "imageslider"
+}
