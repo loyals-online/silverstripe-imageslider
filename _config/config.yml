@@ -1,0 +1,6 @@
+---
+Name: imagesliderconfig
+---
+SiteTree:
+  extensions:
+    - ImageSliderPageExtension
