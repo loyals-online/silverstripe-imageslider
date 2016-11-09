@@ -22,6 +22,7 @@ class ImageSlide extends DataObject
         'LinkExternal'  => 'Varchar(255)',
         'LinkEmail'     => 'Varchar(255)',
         'LinkTelephone' => 'Varchar(255)',
+        'Enabled'       => 'Boolean',
 
     ];
 
@@ -31,7 +32,7 @@ class ImageSlide extends DataObject
     ];
 
     public static $summary_fields = [
-        'Name' => 'Name',
+        'Thumbnail' => 'Image'
     ];
 
     public function getCMSFields()
@@ -44,6 +45,7 @@ class ImageSlide extends DataObject
             'PageID',
             'LinkEmail',
             'LinkTelephone',
+            'Enabled'
         ]);
 
         $fields->insertBefore(
@@ -51,6 +53,11 @@ class ImageSlide extends DataObject
                 ->setFolderName('image-slider-images')
                 ->setDisplayFolderName('image-slider-images'),
             'ButtonText'
+        );
+
+        $fields->insertBefore(
+            CheckboxField::create('Enabled', _t('ImageSlider.Enabled', 'Enabled')),
+            'Name'
         );
 
         $fields->insertAfter(
@@ -90,6 +97,14 @@ class ImageSlide extends DataObject
         );
 
         return $fields;
+    }
+
+    public function getThumbnail() {
+        if ($Image = $this->ImageID) {
+            return $this->Image()->SetHeight(50);
+        } else {
+            return '(No Image)';
+        }
     }
 }
 

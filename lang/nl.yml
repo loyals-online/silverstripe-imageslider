@@ -1,7 +1,7 @@
 nl:
   ImageSlider:
     Page: 'Pagina'
-    Name: 'Naam'
+    Name: 'CMS Omschrijving'
     Title: 'Titel'
     SubTitle: 'Subtitel'
     ButtonText: 'Knop tekst'
@@ -14,10 +14,11 @@ nl:
     LinkExternal: 'Link naar externe pagina'
     LinkEmail: 'Link naar email adres'
     LinkTelephone: 'Link naar telefoonnummer'
+    Enabled: 'Ingeschakeld'
   ImageSlide:
     SINGULARNAME: 'Afbeelding'
     PLURALNAME: 'Afbeeldingen'
-    db_Name: 'Naam'
+    db_Name: 'CMS Omschrijving'
     db_Title: 'Titel'
     db_SubTitle: 'Subtitel'
     db_ButtonText: 'Knop tekst'

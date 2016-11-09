@@ -1,7 +1,7 @@
 en:
   ImageSlider:
     Page: 'Page'
-    Name: 'Name'
+    Name: 'CMS Description'
     Title: 'Title'
     SubTitle: 'Subtitle'
     ButtonText: 'Button Text'
@@ -12,3 +12,5 @@ en:
     LinkExternal: 'Link to external page'
     LinkEmail: 'Link to email address'
     LinkTelephone: 'Link to telephone number'
+  ImageSlide:
+    db_Name: 'CMS Description'
