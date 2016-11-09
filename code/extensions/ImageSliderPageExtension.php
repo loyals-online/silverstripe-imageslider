@@ -8,10 +8,6 @@
  */
 class ImageSliderPageExtension extends DataExtension
 {
-    private static $db = [
-        'ImageSliderEnabled'   => 'Boolean',
-    ];
-
     private static $many_many = [
         'ImageSlides' => 'ImageSlide',
     ];
@@ -20,10 +16,10 @@ class ImageSliderPageExtension extends DataExtension
         'ImageSlides' => ['SortOrder' => 'Int'],
     ];
 
-    function fieldLabels($includerelations = true) {
+    function fieldLabels($includerelations = true)
+    {
         $labels = parent::fieldLabels($includerelations);
 
-        $labels['ImageSliderEnabled'] = _t('ImageSlider.EnableImageSlider', 'Enable Image Slider');
         $labels['ImageSlides'] = _t('ImageSlider.ImageSlides', 'Image Slides');
 
         return $labels;
@@ -31,19 +27,58 @@ class ImageSliderPageExtension extends DataExtension
 
     public function updateCMSFields(FieldList $fields)
     {
+        $editableFields = [
+            'Name'    => [
+                'title' => _t('ImageSlider.Name', 'Name'),
+                'field' => 'ReadonlyField',
+            ],
+            'Title'   => [
+                'title' => _t('ImageSlider.Title', 'Title'),
+                'field' => 'ReadonlyField',
+            ],
+            'Enabled' => [
+                'title'    => _t('ImageSlider.Enabled', 'Enabled'),
+                'callback' => function ($record, $column, $grid) {
+                    return CheckboxField::create($column, '');
+                },
+            ],
+        ];
 
         $config = GridFieldConfig_RecordEditor::create()
             ->removeComponentsByType('GridFieldDeleteAction')
-            ->addComponent(new GridFieldDeleteAction(false))
-            ->addComponent(new GridFieldOrderableRows('SortOrder'));
+            ->removeComponentsByType('GridFieldDataColumns')
+            ->addComponent(new GridFieldOrderableRows('SortOrder'))
+            ->addComponent(new GridFieldDataColumns(), 'GridFieldButtonRow')
+            ->addComponent((new GridFieldEditableColumns())->setDisplayFields($editableFields), 'GridFieldButtonRow')
+            ->addComponent(new GridFieldDeleteAction(false));
+
+        $gridfield = GridField::create('ImageSlides', _t('ImageSlider.ImageSlides', 'Image Slides'), $this->owner->ImageSlides()
+            ->sort('SortOrder ASC'), $config);
 
         $fields->addFieldsToTab("Root.Image Slider", [
-            FieldGroup::create(CheckboxField::create('ImageSliderEnabled', ''))->setTitle(_t('ImageSlider.EnableImageSlider', 'Enable Image Slider')),
-            GridField::create('ImageSlides', _t('ImageSlider.ImageSlides', 'Image Slides'), $this->owner->ImageSlides()
-                ->sort('SortOrder ASC'), $config),
+            $gridfield,
         ]);
 
         return $fields;
+    }
+
+    public function MultipleSlides()
+    {
+        if (count($this->owner->ImageSlides()
+                ->filter(['Enabled' => 1])) > 1
+        ) {
+            return $this->owner->ImageSlides()
+                ->filter(['Enabled' => 1])
+                ->sort('SortOrder');
+        }
+    }
+
+    public function SingleImage()
+    {
+        return $this->owner->ImageSlides()
+            ->filter(['Enabled' => 1])
+            ->sort('SortOrder')
+            ->first();
     }
 
 }
