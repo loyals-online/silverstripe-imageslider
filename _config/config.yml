@@ -4,3 +4,7 @@ Name: imagesliderconfig
 SiteTree:
   extensions:
     - ImageSliderPageExtension
+
+Page_Controller:
+  extensions:
+    - ImageSliderControllerInit

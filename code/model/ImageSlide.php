@@ -8,11 +8,19 @@
  */
 class ImageSlide extends DataObject
 {
-
+    /**
+     * @inheritdoc
+     */
     static $singular_name = 'Image Slide';
 
+    /**
+     * @inheritdoc
+     */
     static $plural_name = 'Image Slides';
 
+    /**
+     * @inheritdoc
+     */
     static $db = [
         'Name'          => 'Varchar(255)',
         'Title'         => 'Varchar(255)',
@@ -26,15 +34,24 @@ class ImageSlide extends DataObject
 
     ];
 
+    /**
+     * @inheritdoc
+     */
     private static $has_one = [
         'Image' => 'Image',
         'Page'  => 'Page',
     ];
 
+    /**
+     * @inheritdoc
+     */
     public static $summary_fields = [
         'Thumbnail' => 'Image'
     ];
 
+    /**
+     * @inheritdoc
+     */
     public function getCMSFields()
     {
         $fields = parent::getCMSFields();
@@ -99,6 +116,11 @@ class ImageSlide extends DataObject
         return $fields;
     }
 
+    /**
+     * @Todo: better description
+     *
+     * @return string
+     */
     public function getThumbnail() {
         if ($Image = $this->ImageID) {
             return $this->Image()->SetHeight(50);

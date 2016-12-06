@@ -26,5 +26,7 @@ nl:
     db_LinkExternal: 'Link naar externe pagina'
     db_LinkEmail: 'Link naar email adres'
     db_LinkTelephone: 'Link naar telefoonnummer'
+    db_YoutubeLink: 'Youtube link'
     has_one_Image: 'Afbeelding'
     has_one_Page: 'Pagina'
+    YoutubeExplanation: 'Indien een youtube link is ingevoerd, wordt slechts de eerste beschikbare slide gebruikt. Indien geen slide beschikbaar is, kan de youtube video helaas niet getoond worden'
