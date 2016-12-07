@@ -113,6 +113,8 @@ class ImageSlide extends DataObject
             'LinkType'
         );
 
+        $this->extend('modifyCMSFields');
+
         return $fields;
     }
 
