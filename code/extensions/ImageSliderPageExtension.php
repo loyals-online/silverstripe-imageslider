@@ -75,6 +75,7 @@ class ImageSliderPageExtension extends DataExtension
             ->sort('SortOrder ASC'), $config);
 
         $fields->addFieldsToTab("Root.Image Slider", [
+            $gridfield,
             CompositeField::create(
                 TextField::create(
                     'YoutubeLink',
@@ -87,7 +88,6 @@ class ImageSliderPageExtension extends DataExtension
                 ' ',
                 _t('ImageSlide.YoutubeExplanation', 'Youtube link restricts effective slides')
             ),
-            $gridfield,
         ]);
 
         return $fields;
