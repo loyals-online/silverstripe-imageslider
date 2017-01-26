@@ -1,9 +1,10 @@
 <section class="visual">
+    <% if $hasImageSlider %>
     <% if $MultipleSlides %>
         <div class="slick-slider">
             <% loop $MultipleSlides.Sort('SortOrder') %>
                 <% if $Image %>
-                    <div class="bg-img" style="background-image:url($Image.FocusCropHeight(850).Link());">
+                    <div class="bg-img" style="background-image:url('$Image.FocusFill(1600,480).Link()'); background-position: $Image.PercentageX% $Image.PercentageY%;">
                         <div class="row height-100">
                             <div class="large-12 columns height-100">
                                 <div class="text">
@@ -25,7 +26,7 @@
         </div>
     <% else_if $SingleImage %>
         <% with $SingleImage %>
-            <div class="bg-img<% if $Top.YoutubeLink %> video-visual" data-id="$Top.YoutubeID<% end_if %>" style="background-image:url($Image.FocusCropHeight(850).Link());">
+            <div class="bg-img<% if $Top.YoutubeLink %> video-visual" data-id="$Top.YoutubeID<% end_if %>" style="background-image:url('$Image.FocusFill(1600,480).Link()'); background-position: $Image.PercentageX% $Image.PercentageY%;">
                 <div class="row height-100">
                     <div class="large-12 columns height-100">
                         <div class="text">
@@ -44,5 +45,8 @@
         <% end_with %>
     <% else %>
         <!-- fallback -->
+    <% end_if %>
+    <% else_if $hasSingleImage && $SingleHeaderImage %>
+        <div class="bg-img" style="background-image:url('$SingleHeaderImage.FocusFill(1600,480).Link()'); background-position: $SingleHeaderImage.PercentageX% $SingleHeaderImage.PercentageY%;"></div>
     <% end_if %>
 </section>

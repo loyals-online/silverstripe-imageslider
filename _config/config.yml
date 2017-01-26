@@ -8,3 +8,7 @@ SiteTree:
 Page_Controller:
   extensions:
     - ImageSliderControllerInit
+
+SiteConfig:
+  extensions:
+    - ImageSliderSiteConfigExtension

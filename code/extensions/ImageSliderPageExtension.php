@@ -18,6 +18,13 @@ class ImageSliderPageExtension extends DataExtension
     /**
      * @inheritdoc
      */
+    private static $has_one = [
+        'SingleHeaderImage' => 'Image'
+    ];
+
+    /**
+     * @inheritdoc
+     */
     private static $many_many = [
         'ImageSlides' => 'ImageSlide',
     ];
@@ -46,49 +53,60 @@ class ImageSliderPageExtension extends DataExtension
      */
     public function updateCMSFields(FieldList $fields)
     {
-        $editableFields = [
-            'Name'    => [
-                'title' => _t('ImageSlider.Name', 'Name'),
-                'field' => 'ReadonlyField',
-            ],
-            'Title'   => [
-                'title' => _t('ImageSlider.Title', 'Title'),
-                'field' => 'ReadonlyField',
-            ],
-            'Enabled' => [
-                'title'    => _t('ImageSlider.Enabled', 'Enabled'),
-                'callback' => function ($record, $column, $grid) {
-                    return CheckboxField::create($column, '');
-                },
-            ],
-        ];
 
-        $config = GridFieldConfig_RecordEditor::create()
-            ->removeComponentsByType('GridFieldDeleteAction')
-            ->removeComponentsByType('GridFieldDataColumns')
-            ->addComponent(new GridFieldOrderableRows('SortOrder'))
-            ->addComponent(new GridFieldDataColumns(), 'GridFieldButtonRow')
-            ->addComponent((new GridFieldEditableColumns())->setDisplayFields($editableFields), 'GridFieldButtonRow')
-            ->addComponent(new GridFieldDeleteAction(false));
+        if($this->hasImageSlider()) {
 
-        $gridfield = GridField::create('ImageSlides', _t('ImageSlider.ImageSlides', 'Image Slides'), $this->owner->ImageSlides()
-            ->sort('SortOrder ASC'), $config);
+            $editableFields = [
+                'Name'    => [
+                    'title' => _t('ImageSlider.Name', 'Name'),
+                    'field' => 'ReadonlyField',
+                ],
+                'Title'   => [
+                    'title' => _t('ImageSlider.Title', 'Title'),
+                    'field' => 'ReadonlyField',
+                ],
+                'Enabled' => [
+                    'title'    => _t('ImageSlider.Enabled', 'Enabled'),
+                    'callback' => function ($record, $column, $grid) {
+                        return CheckboxField::create($column, '');
+                    },
+                ],
+            ];
 
-        $fields->addFieldsToTab("Root.Image Slider", [
-            $gridfield,
-            CompositeField::create(
-                TextField::create(
-                    'YoutubeLink',
-                    _t('ImageSlide.db_YoutubeLink', 'Youtube link'),
-                    $this->owner->YoutubeLink
-                )
-            ),
-            ReadonlyField::create(
-                'YoutubeExplanation',
-                ' ',
-                _t('ImageSlide.YoutubeExplanation', 'Youtube link restricts effective slides')
-            ),
-        ]);
+            $config = GridFieldConfig_RecordEditor::create()
+                ->removeComponentsByType('GridFieldDeleteAction')
+                ->removeComponentsByType('GridFieldDataColumns')
+                ->addComponent(new GridFieldOrderableRows('SortOrder'))
+                ->addComponent(new GridFieldDataColumns(), 'GridFieldButtonRow')
+                ->addComponent((new GridFieldEditableColumns())->setDisplayFields($editableFields), 'GridFieldButtonRow')
+                ->addComponent(new GridFieldDeleteAction(false));
+
+            $gridfield = GridField::create('ImageSlides', _t('ImageSlider.ImageSlides', 'Image Slides'), $this->owner->ImageSlides()
+                ->sort('SortOrder ASC'), $config);
+
+            $fields->addFieldsToTab("Root.Image Slider", [
+                $gridfield,
+                CompositeField::create(
+                    TextField::create(
+                        'YoutubeLink',
+                        _t('ImageSlide.db_YoutubeLink', 'Youtube link'),
+                        $this->owner->YoutubeLink
+                    )
+                ),
+                ReadonlyField::create(
+                    'YoutubeExplanation',
+                    ' ',
+                    _t('ImageSlide.YoutubeExplanation', 'Youtube link restricts effective slides')
+                ),
+            ]);
+        } elseif ($this->hasSingleImage()){
+            $fields->addFieldsToTab('Root.Main',
+                UploadField::create('SingleHeaderImage', _t('ImageSlider.Image', 'Image'))
+                    ->setFolderName('headerimages')
+                    ->setDisplayFolderName('headerimages'),
+                'Content'
+                );
+        }
 
         return $fields;
     }
@@ -128,6 +146,14 @@ class ImageSliderPageExtension extends DataExtension
                 ->sort('SortOrder')
                 ->first();
         }
+    }
+
+    public function hasImageSlider(){
+        return in_array($this->owner->Classname, SiteConfig::current_site_config()->getImageSliderPageTypesArray());
+    }
+
+    public function hasSingleImage(){
+        return in_array($this->owner->Classname, SiteConfig::current_site_config()->getSingleImagePageTypesArray());
     }
 
     /**
