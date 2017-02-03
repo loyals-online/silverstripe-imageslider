@@ -20,9 +20,18 @@ class ImageSliderSiteConfigExtension extends DataExtension
         // Get all subclasses of Page
         $pageClasses = ClassInfo::subclassesFor('Page');
 
-        $fields->addFieldsToTab("Root.ImageSlider", [
-            CheckboxSetField::create('ImageSliderPageTypes', 'Select page types for image slider functionality', $pageClasses),
-            CheckboxSetField::create('SingleImagePageTypes', 'Select page types for single image functionality', $pageClasses)
+        // Get all excluded pages from config. Extra pages can be excluded in the site config using the YML settings
+        $pageExcludes = Config::inst()->get('ImageSliderConfig', 'PageTypeExcludes');
+
+        foreach ($pageExcludes as $page) {
+            unset($pageClasses[$page]);
+        }
+
+        $fields->addFieldsToTab("Root.Modules", [
+            HeaderField::create('Image Slider'),
+            CheckboxSetField::create('ImageSliderPageTypes', _t('ImageSlider.SiteConfig.SelectPageTypes', 'Select page types'), $pageClasses),
+            HeaderField::create('Single Image'),
+            CheckboxSetField::create('SingleImagePageTypes', _t('ImageSlider.SiteConfig.SelectPageTypes', 'Select page types'), $pageClasses)
         ]);
 
         return $fields;

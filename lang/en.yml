@@ -12,6 +12,8 @@ en:
     LinkExternal: 'Link to external page'
     LinkEmail: 'Link to email address'
     LinkTelephone: 'Link to telephone number'
+    SiteConfig:
+      SelectPageTypes: 'Select page types'
   ImageSlide:
     db_Name: 'CMS Description'
     db_YoutubeLink: 'Youtube link'

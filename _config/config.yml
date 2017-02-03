@@ -12,3 +12,12 @@ Page_Controller:
 SiteConfig:
   extensions:
     - ImageSliderSiteConfigExtension
+
+ImageSliderConfig:
+  PageTypeExcludes:
+    - 'VirtualPage'
+    - 'ErrorPage'
+    - 'RedirectorPage'
+    - 'BlogTree'
+    - 'BlogEntry'
+    - 'BlogHolder'
