@@ -122,13 +122,9 @@ class ImageSliderPageExtension extends DataExtension
             return false;
         }
 
-        if (count($this->owner->ImageSlides()
-                ->filter(['Enabled' => 1])) > 1
-        ) {
-            return $this->owner->ImageSlides()
-                ->filter(['Enabled' => 1])
-                ->sort('SortOrder');
-        }
+        return $this->owner->ImageSlides()
+            ->filter(['Enabled' => 1])
+            ->sort('SortOrder');
     }
 
     /**
