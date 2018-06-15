@@ -134,17 +134,12 @@ class ImageSliderPageExtension extends DataExtension
     /**
      * Retrieve single slide
      *
-     * @return ImageSLide
+     * @return Image
      */
     public function SingleImage()
     {
-        if ($this->owner->YoutubeLink || count($this->owner->ImageSlides()
-                ->filter(['Enabled' => 1])) == 1
-        ) {
-            return $this->owner->ImageSlides()
-                ->filter(['Enabled' => 1])
-                ->sort('SortOrder')
-                ->first();
+        if ($this->owner->YoutubeLink || $this->owner->SingleHeaderImageID) {
+            return $this->owner->SingleHeaderImage();
         }
     }
 
