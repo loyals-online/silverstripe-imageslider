@@ -9,7 +9,7 @@
     "module",
     "cms"
   ],
-  "license": "GPLv3",
+  "license": "GPL-3.0-or-later",
   "authors": [
     {
       "name": "Jan-Pieter van der Poel",
