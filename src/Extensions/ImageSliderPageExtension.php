@@ -1,5 +1,27 @@
 <?php
 
+namespace Loyals\ImageSlider\Extensions;
+
+use Loyals\ImageSlider\Service\SiteHelper;
+use Loyals\ImageSlider\Model\ImageSlide;
+use SilverStripe\Assets\Image;
+use SilverStripe\ORM\DataExtension;
+use SilverStripe\Forms\FieldList;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\GridField\GridFieldConfig_RecordEditor;
+use SilverStripe\ORM\DataList;
+use Symbiote\GridFieldExtensions\GridFieldOrderableRows;
+use SilverStripe\Forms\GridField\GridFieldDataColumns;
+use Symbiote\GridFieldExtensions\GridFieldEditableColumns;
+use SilverStripe\Forms\GridField\GridFieldDeleteAction;
+use SilverStripe\Forms\GridField\GridField;
+use SilverStripe\Forms\CompositeField;
+use SilverStripe\Forms\TextField;
+use SilverStripe\Forms\ReadonlyField;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\SiteConfig\SiteConfig;
+use SilverStripe\Forms\GridField\GridFieldButtonRow;
+
 /**
  * Created by PhpStorm.
  * User: jpvanderpoel
@@ -19,14 +41,14 @@ class ImageSliderPageExtension extends DataExtension
      * @inheritdoc
      */
     private static $has_one = [
-        'SingleHeaderImage' => 'Image'
+        'SingleHeaderImage' => Image::class,
     ];
 
     /**
      * @inheritdoc
      */
     private static $many_many = [
-        'ImageSlides' => 'ImageSlide',
+        'ImageSlides' => ImageSlide::class,
     ];
 
     /**
@@ -41,7 +63,7 @@ class ImageSliderPageExtension extends DataExtension
      */
     function fieldLabels($includerelations = true)
     {
-        $labels = parent::fieldLabels($includerelations);
+        $labels = $this->owner->fieldLabels($includerelations);
 
         $labels['ImageSlides'] = _t('ImageSlider.ImageSlides', 'Image Slides');
 
@@ -59,11 +81,11 @@ class ImageSliderPageExtension extends DataExtension
             $editableFields = [
                 'Name'    => [
                     'title' => _t('ImageSlider.Name', 'Name'),
-                    'field' => 'ReadonlyField',
+                    'field' => ReadonlyField::class,
                 ],
                 'Title'   => [
                     'title' => _t('ImageSlider.Title', 'Title'),
-                    'field' => 'ReadonlyField',
+                    'field' => ReadonlyField::class,
                 ],
                 'Enabled' => [
                     'title'    => _t('ImageSlider.Enabled', 'Enabled'),
@@ -74,11 +96,11 @@ class ImageSliderPageExtension extends DataExtension
             ];
 
             $config = GridFieldConfig_RecordEditor::create()
-                ->removeComponentsByType('GridFieldDeleteAction')
-                ->removeComponentsByType('GridFieldDataColumns')
+                ->removeComponentsByType(GridFieldDeleteAction::class)
+                ->removeComponentsByType(GridFieldDataColumns::class)
                 ->addComponent(new GridFieldOrderableRows('SortOrder'))
-                ->addComponent(new GridFieldDataColumns(), 'GridFieldButtonRow')
-                ->addComponent((new GridFieldEditableColumns())->setDisplayFields($editableFields), 'GridFieldButtonRow')
+                ->addComponent(new GridFieldDataColumns(), GridFieldButtonRow::class)
+                ->addComponent((new GridFieldEditableColumns())->setDisplayFields($editableFields), GridFieldButtonRow::class)
                 ->addComponent(new GridFieldDeleteAction(false));
 
             $gridfield = GridField::create('ImageSlides', _t('ImageSlider.ImageSlides', 'Image Slides'), $this->owner->ImageSlides()
@@ -100,12 +122,9 @@ class ImageSliderPageExtension extends DataExtension
                 ),
             ]);
         } elseif ($this->hasSingleImage()){
-            $fields->addFieldsToTab('Root.Main',
-                UploadField::create('SingleHeaderImage', _t('ImageSlider.Image', 'Image'))
-                    ->setFolderName('headerimages')
-                    ->setDisplayFolderName('headerimages'),
-                'Content'
-                );
+            $fields->addFieldsToTab('Root.Main', [
+                UploadField::create('SingleHeaderImage', _t('ImageSlider.Image', 'Image'))->setFolderName('headerimages')
+            ], 'Content');
         }
 
         return $fields;
@@ -140,11 +159,13 @@ class ImageSliderPageExtension extends DataExtension
     }
 
     public function hasImageSlider(){
-        return in_array($this->owner->Classname, SiteConfig::current_site_config()->getImageSliderPageTypesArray());
+        $className = SiteHelper::ClassShortName(get_class($this->owner));
+        return in_array($className, SiteConfig::current_site_config()->getImageSliderPageTypesArray());
     }
 
     public function hasSingleImage(){
-        return in_array($this->owner->Classname, SiteConfig::current_site_config()->getSingleImagePageTypesArray());
+        $className = SiteHelper::ClassShortName(get_class($this->owner));
+        return in_array($className, SiteConfig::current_site_config()->getSingleImagePageTypesArray());
     }
 
     /**

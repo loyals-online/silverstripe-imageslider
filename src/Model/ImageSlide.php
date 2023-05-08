@@ -1,5 +1,21 @@
 <?php
 
+namespace Loyals\ImageSlider\Model;
+
+use Page;
+use SilverStripe\Assets\Image;
+use SilverStripe\ORM\DataObject;
+use SilverStripe\Security\Permission;
+use SilverStripe\AssetAdmin\Forms\UploadField;
+use SilverStripe\Forms\CheckboxField;
+use SilverStripe\Forms\CompositeField;
+use UncleCheese\DisplayLogic\Forms\Wrapper;
+use SilverStripe\Forms\TreeDropdownField;
+use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\FieldType\DBBoolean;
+use SilverStripe\CMS\Model\SiteTree;
+use SilverStripe\Control\Email\Email;
+
 /**
  * Created by PhpStorm.
  * User: jpvanderpoel
@@ -8,20 +24,22 @@
  */
 class ImageSlide extends DataObject
 {
-    /**
-     * @inheritdoc
-     */
-    static $singular_name = 'Image Slide';
+    private static $table_name = 'ImageSlide';
 
     /**
      * @inheritdoc
      */
-    static $plural_name = 'Image Slides';
+    private static $singular_name = 'Image Slide';
 
     /**
      * @inheritdoc
      */
-    static $db = [
+    private static $plural_name = 'Image Slides';
+
+    /**
+     * @inheritdoc
+     */
+    private static $db = [
         'Name'          => 'Varchar(255)',
         'Title'         => 'Varchar(255)',
         'SubTitle'      => 'Varchar(255)',
@@ -30,23 +48,22 @@ class ImageSlide extends DataObject
         'LinkExternal'  => 'Varchar(255)',
         'LinkEmail'     => 'Varchar(255)',
         'LinkTelephone' => 'Varchar(255)',
-        'Enabled'       => 'Boolean',
-
+        'Enabled'       => DBBoolean::class,
     ];
 
     /**
      * @inheritdoc
      */
     private static $has_one = [
-        'Image' => 'Image',
-        'Page'  => 'Page',
+        'Image' => Image::class,
+        'Page'  => Page::class,
     ];
 
     /**
      * @inheritdoc
      */
-    public static $summary_fields = [
-        'Thumbnail' => 'Image'
+    private static $summary_fields = [
+        'Thumbnail' => Image::class,
     ];
 
     /**
@@ -81,7 +98,7 @@ class ImageSlide extends DataObject
      *
      * @return bool|int
      */
-    public function canCreate($member = null) {
+    public function canCreate($member = null, $context = []) {
         return Permission::check('CMS_ACCESS', 'any', $member);
     }
 
@@ -102,24 +119,24 @@ class ImageSlide extends DataObject
         ]);
 
         $fields->insertBefore(
-            UploadField::create('Image', _t('ImageSlider.Image', 'Image'))
+            'ButtonText',
+            UploadField::create('Image', _t('ImageSlider.Image', Image::class))
                 ->setFolderName('image-slider-images')
-                ->setDisplayFolderName('image-slider-images'),
-            'ButtonText'
         );
 
         $fields->insertBefore(
-            CheckboxField::create('Enabled', _t('ImageSlider.Enabled', 'Enabled')),
-            'Name'
+            'Name',
+            CheckboxField::create('Enabled', _t('ImageSlider.Enabled', 'Enabled'))
         );
 
         $fields->insertAfter(
+            'LinkType',
             CompositeField::create(
-                DisplayLogicWrapper::create(
+                Wrapper::create(
                     TreeDropdownField::create(
                         'PageID',
                         _t('ImageSlider.LinkInternal', 'Link to internal page'),
-                        'SiteTree',
+                        SiteTree::class,
                         'ID',
                         'MenuTitle'
                     )
@@ -127,26 +144,25 @@ class ImageSlide extends DataObject
                     ->displayIf('LinkType')
                     ->isEqualTo('Internal')
                     ->end(),
-                DisplayLogicWrapper::create(
+                Wrapper::create(
                     TextField::create('LinkExternal', _t('ImageSlider.LinkExternal', 'Link to external page'))
                 )
                     ->displayIf('LinkType')
                     ->isEqualTo('External')
                     ->end(),
-                DisplayLogicWrapper::create(
+                Wrapper::create(
                     TextField::create('LinkEmail', _t('ImageSlider.LinkEmail', 'Link to email address'))
                 )
                     ->displayIf('LinkType')
-                    ->isEqualTo('Email')
+                    ->isEqualTo(Email::class)
                     ->end(),
-                DisplayLogicWrapper::create(
+                Wrapper::create(
                     TextField::create('LinkTelephone', _t('ImageSlider.LinkTelephone', 'Link to telephone number'))
                 )
                     ->displayIf('LinkType')
                     ->isEqualTo('Telephone')
                     ->end()
-            ),
-            'LinkType'
+            )
         );
 
         $this->extend('modifyCMSFields', $fields);
@@ -161,7 +177,7 @@ class ImageSlide extends DataObject
      */
     public function getThumbnail() {
         if ($Image = $this->ImageID) {
-            return $this->Image()->SetHeight(50);
+            return $this->Image()->ScaleHeight(50);
         } else {
             return '(No Image)';
         }

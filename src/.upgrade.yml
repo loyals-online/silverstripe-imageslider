@@ -1,0 +1,5 @@
+mappings:
+  ImageSliderControllerInit: Loyals\ImageSlider\Extensions\ImageSliderControllerInit
+  ImageSliderPageExtension: Loyals\ImageSlider\Extensions\ImageSliderPageExtension
+  ImageSliderSiteConfigExtension: Loyals\ImageSlider\Extensions\ImageSliderSiteConfigExtension
+  ImageSlide: Loyals\ImageSlider\Model\ImageSlide

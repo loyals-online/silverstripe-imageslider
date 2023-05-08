@@ -3,21 +3,20 @@ Name: imagesliderconfig
 ---
 SiteTree:
   extensions:
-    - ImageSliderPageExtension
+    - Loyals\ImageSlider\Extensions\ImageSliderPageExtension
 
 Page_Controller:
   extensions:
-    - ImageSliderControllerInit
+    - Loyals\ImageSlider\Extensions\ImageSliderControllerInit
 
 SiteConfig:
   extensions:
-    - ImageSliderSiteConfigExtension
+    - Loyals\ImageSlider\Extensions\ImageSliderSiteConfigExtension
 
 ImageSliderConfig:
   PageTypeExcludes:
-    - 'VirtualPage'
-    - 'ErrorPage'
-    - 'RedirectorPage'
-    - 'BlogTree'
-    - 'BlogEntry'
-    - 'BlogHolder'
+    - SilverStripe\CMS\Model\VirtualPage
+    - SilverStripe\ErrorPage\ErrorPage
+    - SilverStripe\CMS\Model\RedirectorPage
+    - SilverStripe\Blog\Model\Blog
+    - SilverStripe\Blog\Model\BlogPost

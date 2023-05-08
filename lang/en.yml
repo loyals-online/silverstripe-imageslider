@@ -12,9 +12,8 @@ en:
     LinkExternal: 'Link to external page'
     LinkEmail: 'Link to email address'
     LinkTelephone: 'Link to telephone number'
-    SiteConfig:
-      SelectPageTypes: 'Select page types'
-  ImageSlide:
+    SiteConfigSelectPageTypes: 'Select page types'
+  Loyals\ImageSlider\Model\ImageSlide:
     db_Name: 'CMS Description'
     db_YoutubeLink: 'Youtube link'
     YoutubeExplanation: 'If a youtube link is set, only the first available slide is used. If no slides are available, the youtube video can not be shown.'

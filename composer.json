@@ -14,15 +14,25 @@
     {
       "name": "Jan-Pieter van der Poel",
       "email": "jp@loyals.nl"
+    },
+    {
+      "name": "Gabrijel Gavranović",
+      "email": "gabrijel@gavro.nl"
     }
   ],
   "require": {
-    "silverstripe/framework": "3.*",
-    "silverstripe/display-logic": "1.5.*",
-    "symbiote/silverstripe-gridfieldextensions": "1.*"
+    "silverstripe/framework": "4.*",
+    "silverstripe/display-logic": "2.*",
+    "symbiote/silverstripe-gridfieldextensions": "3.*"
+  },
+  "autoload": {
+    "psr-4": {
+      "Loyals\\ImageSlider\\": "src/"
+    }
   },
   "extra": {
-    "installer-name": "imageslider"
-  },
-  "target-dir": "imageslider"
+    "expose": [
+      "javascript"
+    ]
+  }
 }

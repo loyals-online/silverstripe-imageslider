@@ -15,8 +15,7 @@ nl:
     LinkEmail: 'Link naar email adres'
     LinkTelephone: 'Link naar telefoonnummer'
     Enabled: 'Ingeschakeld'
-    SiteConfig:
-      SelectPageTypes: 'Selecteer pagina types'
+    SiteConfigSelectPageTypes: 'Selecteer pagina types'
   ImageSlide:
     SINGULARNAME: 'Afbeelding'
     PLURALNAME: 'Afbeeldingen'
