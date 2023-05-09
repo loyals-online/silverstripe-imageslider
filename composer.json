@@ -1,7 +1,7 @@
 {
   "name": "mediaweb/silverstripe-imageslider",
   "description": "A simple yet configurable image slider",
-  "type": "silverstripe-module",
+  "type": "silverstripe-vendormodule",
   "keywords": [
     "silverstripe",
     "slider",
@@ -21,6 +21,7 @@
     }
   ],
   "require": {
+    "php": "^7.4 || ^8.0",
     "silverstripe/framework": "4.*",
     "silverstripe/display-logic": "2.*",
     "symbiote/silverstripe-gridfieldextensions": "3.*"
