@@ -1,15 +1,15 @@
 ---
 Name: imagesliderconfig
 ---
-SiteTree:
+SilverStripe\CMS\Model\SiteTree:
   extensions:
     - Loyals\ImageSlider\Extensions\ImageSliderPageExtension
 
-Page_Controller:
+PageController:
   extensions:
     - Loyals\ImageSlider\Extensions\ImageSliderControllerInit
 
-SiteConfig:
+SilverStripe\SiteConfig\SiteConfig:
   extensions:
     - Loyals\ImageSlider\Extensions\ImageSliderSiteConfigExtension
 
