@@ -14,6 +14,7 @@ nl:
     LinkExternal: 'Link naar externe pagina'
     LinkEmail: 'Link naar email adres'
     LinkTelephone: 'Link naar telefoonnummer'
+    OpenInNewWindow: 'Open in nieuw venster'
     Enabled: 'Ingeschakeld'
     SiteConfigSelectPageTypes: 'Selecteer pagina types'
   ImageSlide:

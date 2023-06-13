@@ -11,8 +11,8 @@
                                     <% if $Title %><h1>$Title</h1><% else %><h1>$Level(1).Title</h1><% end_if %>
                                     <% if $SubTitle %><h3>$SubTitle</h3><% end_if %>
                                     <% if $ButtonText && $LinkType != 'None' %>
-                                        <% if $LinkType = 'Internal' %><a class="button" href="$Page.Link">$ButtonText</a><% end_if %>
-                                        <% if $LinkType = 'External' %><a class="button" href="$LinkExternal" target="_blank">$ButtonText</a><% end_if %>
+                                        <% if $LinkType = 'Internal' %><a class="button" <% if $OpenInNewWindow %>target="_blank"<% end_if %> href="$Page.Link" >$ButtonText</a><% end_if %>
+                                        <% if $LinkType = 'External' %><a class="button" <% if $OpenInNewWindow %>target="_blank"<% end_if %> href="$LinkExternal" target="_blank">$ButtonText</a><% end_if %>
                                         <% if $LinkType = 'Email' %><a class="button" href="mailto:$LinkEmail">$ButtonText</a><% end_if %>
                                         <% if $LinkType = 'Telephone' %><a class="button" href="tel:$LinkTelephone">$ButtonText</a><% end_if %>
                                     <% end_if %>
@@ -33,8 +33,8 @@
                             <% if $Title %><h1>$Title</h1><% else %><h1>$Level(1).Title</h1><% end_if %>
                             <% if $SubTitle %><h3>$SubTitle</h3><% end_if %>
                             <% if $ButtonText && $LinkType != 'None' %>
-                                <% if $LinkType = 'Internal' %><a class="button" href="$Page.Link">$ButtonText</a><% end_if %>
-                                <% if $LinkType = 'External' %><a class="button" href="$LinkExternal" target="_blank">$ButtonText</a><% end_if %>
+                                <% if $LinkType = 'Internal' %><a class="button" <% if $OpenInNewWindow %>target="_blank"<% end_if %> href="$Page.Link">$ButtonText</a><% end_if %>
+                                <% if $LinkType = 'External' %><a class="button" <% if $OpenInNewWindow %>target="_blank"<% end_if %> href="$LinkExternal" target="_blank">$ButtonText</a><% end_if %>
                                 <% if $LinkType = 'Email' %><a class="button" href="mailto:$LinkEmail">$ButtonText</a><% end_if %>
                                 <% if $LinkType = 'Telephone' %><a class="button" href="tel:$LinkTelephone">$ButtonText</a><% end_if %>
                             <% end_if %>

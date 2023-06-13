@@ -12,6 +12,8 @@ en:
     LinkExternal: 'Link to external page'
     LinkEmail: 'Link to email address'
     LinkTelephone: 'Link to telephone number'
+    OpenInNewWindow: 'Open in new window'
+    Enabled: 'Enabled'
     SiteConfigSelectPageTypes: 'Select page types'
   Loyals\ImageSlider\Model\ImageSlide:
     db_Name: 'CMS Description'

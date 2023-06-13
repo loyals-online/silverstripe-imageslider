@@ -40,15 +40,16 @@ class ImageSlide extends DataObject
      * @inheritdoc
      */
     private static $db = [
-        'Name'          => 'Varchar(255)',
-        'Title'         => 'Varchar(255)',
-        'SubTitle'      => 'Varchar(255)',
-        'ButtonText'    => 'Varchar(255)',
-        'LinkType'      => 'Enum("None,Internal,External,Email,Telephone","None")',
-        'LinkExternal'  => 'Varchar(255)',
-        'LinkEmail'     => 'Varchar(255)',
-        'LinkTelephone' => 'Varchar(255)',
-        'Enabled'       => DBBoolean::class,
+        'Name'            => 'Varchar(255)',
+        'Title'           => 'Varchar(255)',
+        'SubTitle'        => 'Varchar(255)',
+        'ButtonText'      => 'Varchar(255)',
+        'LinkType'        => 'Enum("None,Internal,External,Email,Telephone","None")',
+        'LinkExternal'    => 'Varchar(255)',
+        'LinkEmail'       => 'Varchar(255)',
+        'LinkTelephone'   => 'Varchar(255)',
+        'OpenInNewWindow' => DBBoolean::class,
+        'Enabled'         => DBBoolean::class,
     ];
 
     /**
@@ -161,6 +162,14 @@ class ImageSlide extends DataObject
                 )
                     ->displayIf('LinkType')
                     ->isEqualTo('Telephone')
+                    ->end(),
+                Wrapper::create(
+                    TextField::create('OpenInNewWindow', _t('ImageSlider.OpenInNewWindow', 'Open in new window'))
+                )
+                    ->displayIf('LinkType')
+                    ->isEqualTo('Internal')
+                        ->orIf('LinkType')
+                        ->isEqualTo('External')
                     ->end()
             )
         );
