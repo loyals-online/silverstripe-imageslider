@@ -116,6 +116,7 @@ class ImageSlide extends DataObject
             'PageID',
             'LinkEmail',
             'LinkTelephone',
+            'OpenInNewWindow',
             'Enabled'
         ]);
 
@@ -164,7 +165,7 @@ class ImageSlide extends DataObject
                     ->isEqualTo('Telephone')
                     ->end(),
                 Wrapper::create(
-                    TextField::create('OpenInNewWindow', _t('ImageSlider.OpenInNewWindow', 'Open in new window'))
+                    CheckboxField::create('OpenInNewWindow', _t('ImageSlider.OpenInNewWindow', 'Open in new window'))
                 )
                     ->displayIf('LinkType')
                     ->isEqualTo('Internal')

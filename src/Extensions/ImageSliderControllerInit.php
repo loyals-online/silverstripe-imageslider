@@ -16,9 +16,9 @@ class ImageSliderControllerInit extends Extension
     {
 
         return [
-            ModuleResourceLoader::singleton()->resourcePath('eha/imageslider:javascript/slick/slick.min.js'),
-            ModuleResourceLoader::singleton()->resourcePath('eha/imageslider:javascript/youtubebackground/jquery.youtubebackground.min.js'),
-            ModuleResourceLoader::singleton()->resourcePath('eha/imageslider:javascript/imageslider.js'),
+            ModuleResourceLoader::singleton()->resourcePath('mediaweb/silverstripe-imageslider:javascript/slick/slick.min.js'),
+            ModuleResourceLoader::singleton()->resourcePath('mediaweb/silverstripe-imageslider:javascript/youtubebackground/jquery.youtubebackground.min.js'),
+            ModuleResourceLoader::singleton()->resourcePath('mediaweb/silverstripe-imageslider:javascript/imageslider.js'),
         ];
     }
 }
