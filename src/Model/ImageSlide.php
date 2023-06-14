@@ -4,6 +4,8 @@ namespace Loyals\ImageSlider\Model;
 
 use Page;
 use SilverStripe\Assets\Image;
+use SilverStripe\Forms\DropdownField;
+use SilverStripe\Forms\FieldList;
 use SilverStripe\ORM\DataObject;
 use SilverStripe\Security\Permission;
 use SilverStripe\AssetAdmin\Forms\UploadField;
@@ -15,6 +17,7 @@ use SilverStripe\Forms\TextField;
 use SilverStripe\ORM\FieldType\DBBoolean;
 use SilverStripe\CMS\Model\SiteTree;
 use SilverStripe\Control\Email\Email;
+use Sheadawson\DependentDropdown\Forms\DependentDropdownField;
 
 /**
  * Created by PhpStorm.
@@ -44,7 +47,7 @@ class ImageSlide extends DataObject
         'Title'           => 'Varchar(255)',
         'SubTitle'        => 'Varchar(255)',
         'ButtonText'      => 'Varchar(255)',
-        'LinkType'        => 'Enum("None,Internal,External,Email,Telephone","None")',
+        'LinkType'        => 'Enum("None,Internal,BlogPost,External,Email,Telephone","None")',
         'LinkExternal'    => 'Varchar(255)',
         'LinkEmail'       => 'Varchar(255)',
         'LinkTelephone'   => 'Varchar(255)',
@@ -56,8 +59,10 @@ class ImageSlide extends DataObject
      * @inheritdoc
      */
     private static $has_one = [
-        'Image' => Image::class,
-        'Page'  => Page::class,
+        'Image'    => Image::class,
+        'Page'     => Page::class,
+        'Blog'     => Page::class,
+        'BlogPost' => Page::class,
     ];
 
     /**
@@ -114,6 +119,8 @@ class ImageSlide extends DataObject
             'LinkExternal',
             'Image',
             'PageID',
+            'BlogID',
+            'BlogPostID',
             'LinkEmail',
             'LinkTelephone',
             'OpenInNewWindow',
@@ -131,6 +138,21 @@ class ImageSlide extends DataObject
             CheckboxField::create('Enabled', _t('ImageSlider.Enabled', 'Enabled'))
         );
 
+        if (class_exists('SilverStripe\Blog\Model\BlogPost')) {
+            $blogDatesSource = function ($blogID) {
+                if ($blogID) {
+                    return \SilverStripe\Blog\Model\BlogPost::get()->filter('ParentID', $blogID)->map();
+                }
+
+                return [];
+            };
+        } else {
+            $linkTypeField = $fields->dataFieldByName('LinkType');
+            $options = $this->dbObject('LinkType')->enumValues();
+            unset($options['BlogPost']);
+            $linkTypeField->setSource($options);
+        }
+
         $fields->insertAfter(
             'LinkType',
             CompositeField::create(
@@ -141,11 +163,35 @@ class ImageSlide extends DataObject
                         SiteTree::class,
                         'ID',
                         'MenuTitle'
-                    )
+                    )->setShowSelectedPath(true)
                 )
                     ->displayIf('LinkType')
                     ->isEqualTo('Internal')
                     ->end(),
+                class_exists('SilverStripe\Blog\Model\Blog') ? (Wrapper::create(
+                    $blogSource = DropdownField::create(
+                        'BlogID',
+                        _t('ImageSlider.Blog', 'Choose parent blog'),
+                        \SilverStripe\Blog\Model\Blog::get()->map()
+                    )->setHasEmptyDefault(true)
+                )
+                    ->displayIf('LinkType')
+                    ->isEqualTo('BlogPost')
+                    ->end()
+                ) : null,
+                class_exists('SilverStripe\Blog\Model\BlogPost') ? (Wrapper::create(
+                    DependentDropdownField::create(
+                        'BlogPostID',
+                        _t('ImageSlider.BlogPost', 'Link to blog post'),
+                        $blogDatesSource
+                    )->setDepends($blogSource)
+                )
+                    ->displayIf('LinkType')
+                    ->isEqualTo('BlogPost')
+                    ->andIf('BlogID')
+                    ->isNotEmpty()
+                    ->end()
+                ) : null,
                 Wrapper::create(
                     TextField::create('LinkExternal', _t('ImageSlider.LinkExternal', 'Link to external page'))
                 )
@@ -193,4 +239,3 @@ class ImageSlide extends DataObject
         }
     }
 }
-

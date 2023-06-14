@@ -24,7 +24,8 @@
     "php": "^7.4 || ^8.0",
     "silverstripe/framework": "4.*",
     "silverstripe/display-logic": "2.*",
-    "symbiote/silverstripe-gridfieldextensions": "3.*"
+    "symbiote/silverstripe-gridfieldextensions": "3.*",
+    "sheadawson/silverstripe-dependentdropdownfield": "3.*"
   },
   "autoload": {
     "psr-4": {
