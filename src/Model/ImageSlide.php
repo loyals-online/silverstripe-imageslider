@@ -216,7 +216,9 @@ class ImageSlide extends DataObject
                     ->displayIf('LinkType')
                     ->isEqualTo('Internal')
                         ->orIf('LinkType')
-                        ->isEqualTo('External')
+                        ->isEqualTo('BlogLink')
+                            ->orIf('LinkType')
+                            ->isEqualTo('External')
                     ->end()
             )
         );
